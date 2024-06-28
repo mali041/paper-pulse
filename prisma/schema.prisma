@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Supplier {
+  id             Int             @id @default(autoincrement())
+  name           String
+  phoneNo        String
+  wasteReceipts  WasteReceipt[]
+  wasteReceiveds WasteReceived[]
+}
+
+model WasteType {
+  id            Int             @id @default(autoincrement())
+  name          String
+  WasteReceipt  WasteReceipt[]
+  WasteReceived WasteReceived[]
+  WasteStack    WasteStack[]
+  WasteUsage    WasteUsage[]
+}
+
+model WasteReceipt {
+  id                        Int       @id @default(autoincrement())
+  receiptDate               DateTime
+  supplierId                Int
+  supplier                  Supplier  @relation(fields: [supplierId], references: [id])
+  vehicleNo                 String
+  wasteTypeId               Int
+  wasteType                 WasteType @relation(fields: [wasteTypeId], references: [id])
+  stackNo                   Int
+  vehicleWeightWithWaste    Float
+  vehicleWeightWithoutWaste Float
+  netWeightOfWaste          Float
+  unitPrice                 Float
+}
+
+model WasteReceived {
+  id                 Int       @id @default(autoincrement())
+  receiptDate        DateTime
+  supplierId         Int
+  supplier           Supplier  @relation(fields: [supplierId], references: [id])
+  vehicleNo          String
+  receiptId          Int
+  wasteTypeId        Int
+  wasteType          WasteType @relation(fields: [wasteTypeId], references: [id])
+  unitPrice          Float
+  netWeightOfWaste   Float
+  totalAmountOfWaste Float
+  paymentReceived    Float
+  balance            Float
+}
+
+model Payment {
+  id           Int      @id @default(autoincrement())
+  date         DateTime
+  type         String // "credit" or "debit"
+  senderName   String
+  amount       Float
+  receiverName String
+}
+
+model WasteStack {
+  id            Int       @id @default(autoincrement())
+  stackNo       Int
+  wasteTypeId   Int
+  wasteType     WasteType @relation(fields: [wasteTypeId], references: [id])
+  totalQuantity Float
+}
+
+model WasteUsage {
+  id           Int       @id @default(autoincrement())
+  stackNo      Int
+  wasteTypeId  Int
+  wasteType    WasteType @relation(fields: [wasteTypeId], references: [id])
+  usedQuantity Float
+  usageDate    DateTime
+}
