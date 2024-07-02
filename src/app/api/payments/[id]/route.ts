@@ -34,13 +34,23 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
+  const paymentId = Number(id);
 
   try {
-    await prisma.payment.delete({
-      where: { id: Number(id) },
-    });
-    return NextResponse.json({ message: 'Payment deleted' }, { status: 204 });
+    await prisma.payment.delete({ where: { id: paymentId } });
+
+    return new NextResponse(null, { status: 204 });
   } catch (error: any) {
-    return NextResponse.json({ message: 'Internal server error', error: error.message }, { status: 500 });
+    console.error("Error deleting payment:", error);
+
+    console.error("Error details:", {
+      id,
+      paymentId,
+      error: error.message,
+      stack: error.stack,
+    });
+    
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
+

@@ -1,8 +1,7 @@
-// lib/features/payment/paymentSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../store';
 
-interface Payment {
+export interface Payment {
   id: string;
   date: string;
   type: string;
@@ -25,66 +24,67 @@ const initialState: PaymentState = {
 
 // Async thunks using createAsyncThunk
 const fetchPayments = createAsyncThunk('payments/fetchPayments', async () => {
-  try {
-    const response = await fetch('/api/payments');
-    if (!response.ok) {
-      throw new Error('Failed to fetch payments');
-    }
-    return await response.json();
-  } catch (error) {
+  const response = await fetch('/api/payments');
+  if (!response.ok) {
     throw new Error('Failed to fetch payments');
   }
+  return await response.json();
+});
+
+const fetchPayment = createAsyncThunk('payments/fetchPayments', async (id: string) => {
+  const response = await fetch(`/api/payments/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch payments');
+  }
+  return await response.json();
 });
 
 const addPayment = createAsyncThunk('payments/addPayment', async (payment: Omit<Payment, 'id'>) => {
-  try {
-    const response = await fetch('/api/payments', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payment),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to add payment');
-    }
-    return await response.json();
-  } catch (error) {
+  console.log("Payment data to be sent:", payment);
+  const response = await fetch('/api/payments', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payment),
+  });
+  if (!response.ok) {
     throw new Error('Failed to add payment');
   }
+  return await response.json();
 });
 
 const updatePayment = createAsyncThunk('payments/updatePayment', async (payment: Payment) => {
-  try {
-    const response = await fetch(`/api/payments/${payment.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payment),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to update payment');
-    }
-    return await response.json();
-  } catch (error) {
+  const response = await fetch(`/api/payments/${payment.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payment),
+  });
+  if (!response.ok) {
     throw new Error('Failed to update payment');
   }
+  return await response.json();
 });
 
-const deletePayment = createAsyncThunk('payments/deletePayment', async (id: string) => {
-  try {
-    const response = await fetch(`/api/payments/${id}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      throw new Error('Failed to delete payment');
+const deletePayment = createAsyncThunk(
+  'payments/deletePayment',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`/api/payments/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete payment');
+      }
+      return id.toString(); // Return the deleted payment ID as string if successful
+    } catch (error: any) {
+      return rejectWithValue(error.message as Error); // Return error message on failure
     }
-    return id;
-  } catch (error) {
-    throw new Error('Failed to delete payment');
   }
-});
+);
+
 
 const paymentSlice = createSlice({
   name: 'payment',
@@ -138,18 +138,23 @@ const paymentSlice = createSlice({
       .addCase(deletePayment.fulfilled, (state, action: PayloadAction<string>) => {
         state.payments = state.payments.filter((payment) => payment.id !== action.payload);
         state.loading = false;
-      })
-      .addCase(deletePayment.rejected, (state, action) => {
+        state.error = null;
+      }).addCase(deletePayment.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to delete payment';
-      });
+        if (action.error.message?.includes('Invalid payment ID')) {
+          state.error = 'Invalid payment ID provided. Please check and try again.';
+        } else {
+          state.error = action.error.message || 'Failed to delete payment';
+        }
+      })
+      
   },
 });
 
 export default paymentSlice.reducer;
 
 // Exporting async thunks for use in components
-export { fetchPayments, addPayment, updatePayment, deletePayment };
+export { fetchPayments, fetchPayment, addPayment, updatePayment, deletePayment };
 
 // Selectors
 export const selectPayments = (state: RootState) => state.payment.payments;

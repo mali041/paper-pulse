@@ -1,8 +1,7 @@
-// app/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch as useReduxDispatch, useSelector as useReduxSelector, TypedUseSelectorHook } from 'react-redux';
-import rootReducer from './rootReducer'; // Assuming you have a rootReducer file
-import logger from 'redux-logger'; // Import logger middleware if needed
+import rootReducer from './rootReducer'; // rootReducer file
+import logger from 'redux-logger'; // Import logger middleware
 
 // Define middleware array
 const middleware = [logger];
