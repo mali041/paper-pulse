@@ -39,7 +39,7 @@ const fetchWasteUsage = createAsyncThunk('wasteUsage/fetchWasteUsage', async (id
 });
 
 const addWasteUsage = createAsyncThunk('wasteUsage/addWasteUsage', async (wasteUsage: Omit<WasteUsage, 'id'>) => {
-  console.log("Payment data to be sent:", wasteUsage);
+  console.log("WasteUsage data to be sent:", wasteUsage);
   const response = await fetch('/api/waste-used', {
     method: 'POST',
     headers: {
