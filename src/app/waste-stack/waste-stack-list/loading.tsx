@@ -6,21 +6,12 @@ const LoadingWasteStackList: React.FC = () => {
       <table className="min-w-full bg-white border rounded-lg overflow-hidden text-center animate-pulse">
         <thead className="bg-gray-100">
           <tr>
-            <th className="py-3 px-4 border-b border-gray-200 animate-pulse">
-              Stack No
+            <th className="py-3 px-4 border-b border-gray-200">Stack No</th>
+            <th className="py-3 px-4 border-b border-gray-200">Waste Type</th>
+            <th className="py-3 px-4 border-b border-gray-200">
+              Total Quantity
             </th>
-            <th className="py-3 px-4 border-b border-gray-200 animate-pulse">
-              Waste Type
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200 animate-pulse">
-              Used Quantity
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200 animate-pulse">
-              Usage Date
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200 animate-pulse">
-              Actions
-            </th>
+            <th className="py-3 px-4 border-b border-gray-200">Actions</th>
           </tr>
         </thead>
         <tbody>

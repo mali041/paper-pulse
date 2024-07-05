@@ -8,7 +8,6 @@ import {
   WasteStack,
 } from "@/lib/features/waste-stack/wasteStackSlice";
 import { AppDispatch } from "@/lib/store";
-import dayjs from "dayjs";
 
 type UpdateWasteStackFormProps = {
   wasteStack: WasteStack;

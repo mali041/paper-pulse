@@ -1,5 +1,3 @@
-// src/app/waste-stack/page.tsx
-
 "use client";
 
 import React, { useState } from "react";

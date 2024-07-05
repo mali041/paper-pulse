@@ -36,7 +36,6 @@ const WasteStackList: React.FC<WasteStackListProps> = ({
       dispatch(fetchWasteStacks());
     } catch (error: any) {
       console.error("Error deleting waste stack:", error);
-      // Handle error as needed, such as displaying a notification or retrying
     }
   };
 
