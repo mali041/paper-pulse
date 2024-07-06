@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import {
   updateWasteReceived,
   WasteReceived,
-} from "@/lib/features/waste-received/wasteReceivedSlice";
+} from "@/lib/features/waste-receive/wasteReceiveSlice";
 import { AppDispatch } from "@/lib/store";
 import dayjs from "dayjs";
 
@@ -51,7 +51,7 @@ const UpdateWasteReceivedForm: React.FC<UpdateWasteReceivedFormProps> = ({
       ),
       paymentReceived: parseFloat(data.paymentReceived as unknown as string),
       balance: parseFloat(data.balance as unknown as string),
-      receiptDate: new Date(data.receiptDate).toISOString(),
+      receiptDate: new Date().toISOString(),
     };
     dispatch(updateWasteReceived(updatedWasteReceived));
     reset();

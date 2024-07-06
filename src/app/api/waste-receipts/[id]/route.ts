@@ -54,13 +54,22 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
+  const wasteReceiptId = Number(id);
 
   try {
-    await prisma.wasteReceipt.delete({
-      where: { id: Number(id) },
-    });
-    return NextResponse.json({ message: 'Waste receipt deleted' }, { status: 204 });
+    await prisma.wasteReceipt.delete({ where: { id: wasteReceiptId } });
+
+    return new NextResponse(null, { status: 204 });
   } catch (error: any) {
-    return NextResponse.json({ message: 'Internal server error', error: error.message }, { status: 500 });
+    console.error("Error deleting wasteReceived:", error);
+
+    console.error("Error details:", {
+      id,
+      wasteReceiptId,
+      error: error.message,
+      stack: error.stack,
+    });
+    
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

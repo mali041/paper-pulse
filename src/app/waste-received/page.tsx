@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import WasteReceivedList from "./waste-received-list/page";
 import UpdateWasteReceivedForm from "./update-waste-received/page";
-import { WasteReceived } from "@/lib/features/waste-received/wasteReceivedSlice";
+import { WasteReceived } from "@/lib/features/waste-receive/wasteReceiveSlice";
 
 const WasteReceivedPage = () => {
   const [selectedWasteReceived, setSelectedWasteReceived] =

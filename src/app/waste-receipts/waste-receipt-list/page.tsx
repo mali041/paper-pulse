@@ -3,45 +3,45 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchWasteReceived,
-  selectWasteReceived,
-  selectWasteReceivedLoading,
-  selectWasteReceivedError,
-  deleteWasteReceived,
-  WasteReceived,
-} from "@/lib/features/waste-receive/wasteReceiveSlice";
+  fetchWasteReceipts,
+  selectWasteReceipts,
+  selectWasteReceiptLoading,
+  selectWasteReceiptError,
+  deleteWasteReceipt,
+  WasteReceipt,
+} from "@/lib/features/waste-receipt/wasteReceiptSlice";
 import { RootState, AppDispatch } from "@/lib/store";
 import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
-import LoadingWasteReceivedList from "./loading";
+import LoadingWasteReceiptList from "./loading";
 
-interface WasteReceivedListProps {
-  onSelectWasteReceived: (wasteReceived: WasteReceived) => void;
+interface WasteReceiptListProps {
+  onSelectWasteReceipt: (wasteReceipt: WasteReceipt) => void;
 }
 
-const WasteReceivedList: React.FC<WasteReceivedListProps> = ({
-  onSelectWasteReceived,
+const WasteReceiptList: React.FC<WasteReceiptListProps> = ({
+  onSelectWasteReceipt,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const wasteReceived = useSelector<RootState, WasteReceived[]>(
-    selectWasteReceived
+  const wasteReceipts = useSelector<RootState, WasteReceipt[]>(
+    selectWasteReceipts
   );
-  const loading = useSelector<RootState, boolean>(selectWasteReceivedLoading);
-  const error = useSelector<RootState, string | null>(selectWasteReceivedError);
+  const loading = useSelector<RootState, boolean>(selectWasteReceiptLoading);
+  const error = useSelector<RootState, string | null>(selectWasteReceiptError);
 
   useEffect(() => {
-    dispatch(fetchWasteReceived());
+    dispatch(fetchWasteReceipts());
   }, [dispatch]);
 
   const handleDelete = async (id: string) => {
     try {
-      await dispatch(deleteWasteReceived(Number(id)));
-      dispatch(fetchWasteReceived());
+      await dispatch(deleteWasteReceipt(Number(id)));
+      dispatch(fetchWasteReceipts());
     } catch (error: any) {
-      console.error("Error deleting waste received:", error);
+      console.error("Error deleting waste receipt:", error);
     }
   };
 
-  if (loading) return <LoadingWasteReceivedList />;
+  if (loading) return <LoadingWasteReceiptList />;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -52,39 +52,37 @@ const WasteReceivedList: React.FC<WasteReceivedListProps> = ({
             <th className="py-3 px-4 border-b border-gray-200">Receipt Date</th>
             <th className="py-3 px-4 border-b border-gray-200">Supplier ID</th>
             <th className="py-3 px-4 border-b border-gray-200">Vehicle No</th>
-            <th className="py-3 px-4 border-b border-gray-200">Receipt ID</th>
             <th className="py-3 px-4 border-b border-gray-200">
               Waste Type ID
             </th>
-            <th className="py-3 px-4 border-b border-gray-200">Unit Price</th>
+            <th className="py-3 px-4 border-b border-gray-200">Stack No</th>
+            <th className="py-3 px-4 border-b border-gray-200">
+              Vehicle Weight With Waste
+            </th>
+            <th className="py-3 px-4 border-b border-gray-200">
+              Vehicle Weight Without Waste
+            </th>
             <th className="py-3 px-4 border-b border-gray-200">
               Net Weight Of Waste
             </th>
-            <th className="py-3 px-4 border-b border-gray-200">
-              Total Amount Of Waste
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200">
-              Payment Received
-            </th>
-            <th className="py-3 px-4 border-b border-gray-200">Balance</th>
+            <th className="py-3 px-4 border-b border-gray-200">Unit Price</th>
             <th className="py-3 px-4 border-b border-gray-200">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {wasteReceived.map((item) => (
+          {wasteReceipts.map((item) => (
             <tr key={item.id} className="border-b border-gray-200">
               <td className="py-3 px-4">
                 {new Date(item.receiptDate).toLocaleDateString()}
               </td>
               <td className="py-3 px-4">{item.supplierId}</td>
               <td className="py-3 px-4">{item.vehicleNo}</td>
-              <td className="py-3 px-4">{item.receiptId}</td>
               <td className="py-3 px-4">{item.wasteTypeId}</td>
-              <td className="py-3 px-4">{item.unitPrice}</td>
+              <td className="py-3 px-4">{item.stackNo}</td>
+              <td className="py-3 px-4">{item.vehicleWeightWithWaste}</td>
+              <td className="py-3 px-4">{item.vehicleWeightWithoutWaste}</td>
               <td className="py-3 px-4">{item.netWeightOfWaste}</td>
-              <td className="py-3 px-4">{item.totalAmountOfWaste}</td>
-              <td className="py-3 px-4">{item.paymentReceived}</td>
-              <td className="py-3 px-4">{item.balance}</td>
+              <td className="py-3 px-4">{item.unitPrice}</td>
               <td className="py-3 px-4 flex justify-center space-x-2 items-center">
                 <button
                   onClick={() => handleDelete(item.id.toString())}
@@ -93,7 +91,7 @@ const WasteReceivedList: React.FC<WasteReceivedListProps> = ({
                   <TrashIcon className="h-5 w-5" />
                 </button>
                 <button
-                  onClick={() => onSelectWasteReceived(item)}
+                  onClick={() => onSelectWasteReceipt(item)}
                   className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   <PencilIcon className="h-5 w-5" />
@@ -107,4 +105,4 @@ const WasteReceivedList: React.FC<WasteReceivedListProps> = ({
   );
 };
 
-export default WasteReceivedList;
+export default WasteReceiptList;
