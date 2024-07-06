@@ -6,14 +6,16 @@ import wasteStackReducer from './features/waste-stack/wasteStackSlice';
 import wasteReceivedReducer from './features/waste-receive/wasteReceiveSlice';
 import wasteReceiptReducer from './features/waste-receipt/wasteReceiptSlice';
 import supplierReducer from './features/supplier/supplierSlice';
+import wasteTypeReducer from './features/waste-type/wasteTypeSlice';
 
 const rootReducer = combineReducers({
   payment: paymentReducer,
-  wasteUsage: wasteUsageReducer,
-  wasteStack: wasteStackReducer,
-  wasteReceived: wasteReceivedReducer,
+  supplier: supplierReducer,
   wasteReceipt: wasteReceiptReducer,
-  supplier: supplierReducer
+  wasteReceived: wasteReceivedReducer,
+  wasteStack: wasteStackReducer,
+  wasteType: wasteTypeReducer,
+  wasteUsage: wasteUsageReducer,
 });
 
 export default rootReducer;

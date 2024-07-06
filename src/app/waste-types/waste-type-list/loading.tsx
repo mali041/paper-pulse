@@ -1,20 +1,18 @@
 import React from "react";
 
-const LoadingSuppplierList: React.FC = () => {
+const LoadingWasteTypeList: React.FC = () => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border rounded-lg overflow-hidden text-center animate-pulse">
         <thead className="bg-gray-100">
           <tr>
             <th className="py-3 px-4 border-b border-gray-200">Name</th>
-            <th className="py-3 px-4 border-b border-gray-200">Phone No</th>
             <th className="py-3 px-4 border-b border-gray-200">Actions</th>
           </tr>
         </thead>
         <tbody>
           {[...Array(5)].map((_, index) => (
             <tr key={index} className="border-b border-gray-200">
-              <td className="py-3 px-4 animate-pulse">Loading...</td>
               <td className="py-3 px-4 animate-pulse">Loading...</td>
               <td className="py-3 px-4 animate-pulse">Loading...</td>
               <td className="py-3 px-4 flex justify-center items-center animate-pulse">
@@ -29,4 +27,4 @@ const LoadingSuppplierList: React.FC = () => {
   );
 };
 
-export default LoadingSuppplierList;
+export default LoadingWasteTypeList;

@@ -60,7 +60,7 @@ const AddWasteReceiptForm: React.FC = () => {
       className="space-y-6 max-w-lg mx-auto bg-white p-8 shadow-lg rounded-lg"
     >
       <div className="flex items-center mb-6">
-        <Link href="/waste-receipt">
+        <Link href="/waste-receipts">
           <span className="flex items-center mr-4 p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600">
             <ArrowLeftIcon className="h-6 w-6 text-blue-600" />
           </span>

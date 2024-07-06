@@ -31,16 +31,24 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({ message: 'Internal server error', error: error.message }, { status: 500 });
   }
 }
-
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
+  const wasteTypeId = Number(id);
 
   try {
-    await prisma.wasteType.delete({
-      where: { id: Number(id) },
-    });
-    return NextResponse.json({ message: 'Waste type deleted' }, { status: 204 });
+    await prisma.wasteType.delete({ where: { id: wasteTypeId } });
+
+    return new NextResponse(null, { status: 204 });
   } catch (error: any) {
-    return NextResponse.json({ message: 'Internal server error', error: error.message }, { status: 500 });
+    console.error("Error deleting wasteType:", error);
+
+    console.error("Error details:", {
+      id,
+      wasteTypeId,
+      error: error.message,
+      stack: error.stack,
+    });
+    
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

@@ -44,7 +44,7 @@ const fetchWasteReceipt = createAsyncThunk('wasteReceipt/fetchWasteReceipt', asy
 });
 
 const addWasteReceipt = createAsyncThunk('wasteReceipt/addWasteReceipt', async (wasteReceipt: Omit<WasteReceipt, 'id'>) => {
-  console.log("wasteReceived data to be sent:", wasteReceipt);
+  console.log("wasteReceipt data to be sent:", wasteReceipt);
   const response = await fetch('/api/waste-receipts', {
     method: 'POST',
     headers: {
